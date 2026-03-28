@@ -1,0 +1,110 @@
+package ERyder;
+import java.util.*;
+import java.time.*;
+public class BikeRental{
+    private boolean isRegisteredUser;
+    private String emailAddress;
+    private String location;
+    private LocalDateTime tripStartTime;
+    private String bikeID;
+    private boolean locationValid;
+    private UserRegistration userRegistration;
+    private ActiveRental activeRental;
+    private LinkedList<ActiveRental> activeRentalsList;
+    private Bike bike;
+    
+    public void simulateApplicationInput(){
+        Scanner scanner = new Scanner(System.in);
+        System.out.println("Please enter true or false to demonstrate the Registered User: ");
+        isRegisteredUser = scanner.nextBoolean();
+        scanner.nextLine();
+        System.out.println("Please enter the email address: ");
+        emailAddress = scanner.nextLine();
+        System.out.println("Please enter the location: ");
+        location = scanner.nextLine();
+        System.out.println("Simulating the analysis of the rental request.");
+        bikeID = analyseRequest(isRegisteredUser, emailAddress, location);
+        if(locationValid){
+            return;
+        }
+        System.out.println("Simulating e-bike reservation…");
+        reserveBike(bikeID);
+        System.out.println("Displaying the active rentals…");
+        viewActiveRentals();
+        System.out.println("Simulating the end of the trip…");
+        removeTrip(bikeID);
+        System.out.println("Displaying the active rentals after trip end…");
+        viewActiveRentals();
+    }
+    public String analyseRequest(boolean isRegistered, String emailAddress, String location){
+        if(isRegistered){
+            System.out.println(" Welcome back, (emailAddress value)!");
+        }
+        else{
+            System.out.println("You're not our registered user. Please consider registering.");
+            userRegistration.registration();
+        }
+        return validateLocation(location);
+    }
+    private String validateLocation(String location){
+        for(Bike bike : BikeDatabase.bikes){
+            if(location.equals(bike.getLocation()) && bike.getIsAvailable()){
+                System.out.println("A bike is available at the location you requested.");
+                locationValid = true;
+                return bike.getBikeID();
+            }
+        }
+        System.out.println("Sorry, no bike are available at the loaction you requested");
+        return null;
+    }
+    private void reserveBike(String bikeID){
+        if(bikeID.isEmpty()){
+
+        }
+        else {
+            for(Bike bike : BikeDatabase.bikes){
+                if(bikeID.equals(bike.getBikeID())){
+                    tripStartTime = LocalDateTime.now();
+                    bike.setIsAvailable(false);
+                    bike.setLastUsedTime(tripStartTime);
+                    System.out.println("Reserving the bike with the(bikeID). Please following the on-screen instructions to locate the bike and start your pleasent journey.");
+                    activeRental = new ActiveRental(bikeID, emailAddress, tripStartTime);
+                    activeRentalsList.add(activeRental);
+                    break;
+                }
+                else if(bikeID.isEmpty()){
+                    System.out.println("Sorry, we're unable to reserve a bike at this time. Please try again later.");
+                }
+            }
+        }
+    }
+    private void viewActiveRentals(){
+        if(activeRentalsList.isEmpty()){
+            System.out.println("No active retals at the moment.");
+        }
+        else{
+            for (ActiveRental activeRental : activeRentalsList) {
+                System.out.println(activeRental);
+            }
+        }
+    }
+    private void removeTrip(String bikeID){
+        Iterator<ActiveRental> iterator = activeRentalsList.iterator();
+        while(iterator.hasNext()){
+            ActiveRental rental = iterator.next();
+            if(bikeID.equals(rental.getbikeID())){
+                iterator.remove();
+                break;
+            }
+        }
+        for (Bike bike : BikeDatabase.bikes) {
+            if(bikeID.equals(bike.getBikeID())){
+                bike.setIsAvailable(true);
+                bike.setLastUsedTime(LocalDateTime.now());
+                System.out.println("Your trip has ended. Thank you for riding eith us.");
+                break;
+            }
+        }
+        
+    }
+}

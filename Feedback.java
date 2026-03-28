@@ -53,7 +53,7 @@ public class Feedback {
                 "Last Name: " + lastName + "\n" +
                 "Email: " + email + "\n" +
                 "Complete Feedback: " + completeFeedback + "\n" +
-                "Is Long Feedback (＞500 chars): " + longFeedback + "\n" +
+                "Is Long Feedback" + longFeedback + "\n" +
                 "Review ID: " + reviewID;
     }
 }
