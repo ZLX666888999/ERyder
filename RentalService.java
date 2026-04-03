@@ -2,11 +2,15 @@ package ERyder;
 
 import java.time.LocalDateTime;
 import java.util.LinkedList;
+import java.util.Stack;
 
 public class RentalService{
     private final LinkedList<ActiveRental> activeRentalsList = new LinkedList<>();
+    private Stack<ERyderLogs> logStack = new Stack<>();
     public void startRental(String bikeID, String email) {
         ActiveRental rental = new ActiveRental(bikeID, email, LocalDateTime.now());
+        String logMessage = "Rental started for bike " + bikeID + " by user " + email;
+        logStack.push(new ERyderLog(logMessage, "Rental Start", LocalDateTime.now()));
         activeRentalsList.add(rental);
     }
     public void endRental(String bikeID) {
@@ -15,6 +19,7 @@ public class RentalService{
             ActiveRental r = it.next();
             if (bikeID.equals(r.getBikeID())) {
                 it.remove();
+                bikeRequestQueue.add(new BikeRequest(r.getBikeID(), r.getUserEmail(), LocalDateTime.now()));
                 break;
             }
         }

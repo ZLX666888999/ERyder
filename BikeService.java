@@ -4,11 +4,14 @@ import java.time.*;
 import java.util.*;
 
 public class BikeService{
+    private Stack<ERyderLog> logStack = new Stack<>();
     private String validateLocation(String location){
         for(Bike bike : BikeDatabase.bikes){
             if(location.equals(bike.getLocation()) && bike.getIsAvailable()){
                 System.out.println("A bike is available at the location you requested.");
                 locationValid = true;
+                String logMessage = "Bike available at location " + location;
+                logStack.push(new ERyderLog(bike.getBikeID(), logMessage, LocalDateTime.now()));
                 return bike.getBikeID();
             }
         }
@@ -27,8 +30,16 @@ public class BikeService{
                     rentalService.startRentalProcess();
                     break;
                 }
-                
+                else {
+                    Queue<BikeRequest> bikeRequestQueue = new LinkedList<>();
+                    bikeRequestQueue.add(new BikeRequest(bikeID, bike.getLocation(), LocalDateTime.now()));
+                }
             }
+        }
+    }
+    public void viewSystemLogs(){
+        for (ERyderLog log : logStack){
+            System.out.println(log);
         }
     }
 }
