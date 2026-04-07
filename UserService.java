@@ -40,7 +40,13 @@ public class UserService{
             System.out.println("Please enter the user type: ");
             String userType = scanner.nextLine();
 
-            RegisteredUsers user = new RegisteredUsers(name, email, date, cardNum, expirydate, cardProvider, cvv, userType);
+            RegisteredUsers user; 
+            if (userType.equalsIgnoreCase("VIP")) {
+                user = new VIPUser(fullName, emailAddress, dateOfBirth, cardNumber, cardExpiryDate, cardProvider, cvv);}
+            else {
+                user = new RegularUser(fullName, emailAddress, dateOfBirth, cardNumber, cardExpiryDate, cardProvider, cvv, "Regular");
+            }
+            registeredUsersList.add(user);
 
             for (int i = 0; i < 3; i++) {
                 System.out.println("\nTrip " + (i + 1));

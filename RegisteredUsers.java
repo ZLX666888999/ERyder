@@ -22,10 +22,6 @@ public class RegisteredUsers{
         this.cvv = cvv;
         this.userType = userType;
     }
-
-
-
-    
     public void setFullname(String fullName){
         this.fullName = fullName;
     }
@@ -59,27 +55,28 @@ public class RegisteredUsers{
     public void setCardProvider(String cardProvider){
         this.cardProvider = cardProvider;
     }
-
-
     public String getCardProvider(){
         return this.cardProvider;
     }
     public void setCvv(int cvv){
         this.cvv = cvv;
     }
-
     public int getCvv(){
         return this.cvv;
     }
-
     public void setUserType(String userType){
         this.userType = userType;
     }
-
     public String getUserType(){
         return this.userType;
     }
-
+    public double calculateFare (double baseFare) {
+        
+        return baseFare;
+    }
+    public void displayUserType() {
+        System.out.println("Regular User");
+    }
     @Override
     public String toString(){
         return "RegisteredUsers{" +

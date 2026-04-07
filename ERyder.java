@@ -1,94 +1,92 @@
- public class ERyder {
-     public static final String COMPANY_NAME = "ERyder";
-    public static final double BASE_FARE = 1.0;
-    public static final double PER_MINUTE_FARE = 0.5;
-    private final String LINKED_ACCOUNT;
-    private final String LINKED_PHONE_NUMBER;
-    private int bikeID;
-    private double batteryLevel;
-    private boolean isAvailable;
-    private double kmDriven;
-    private int totalUsageInMinutes;
-    private double totalFare;
+package ERyder;
 
-    public ERyder(int bikeID, double batteryLevel, boolean isAvailable, double kmDriven) {
-        this.bikeID = bikeID;
-        this.batteryLevel = batteryLevel;
-        this.isAvailable = isAvailable;
-        this.kmDriven = kmDriven;
-        this.LINKED_ACCOUNT = "default_user";
-        this.LINKED_PHONE_NUMBER = "000-000-0000";
-    }
+public class ERyder {
+   private String bikeID;
+   private int batteryLevel;
+   private boolean isAvailable;
+   private double kmDriven;
 
-     public ERyder(int bikeID, double batteryLevel, boolean isAvailable, double kmDriven, String linkedAccount, String linkedPhoneNumber) {
-        this.bikeID = bikeID;
-        this.batteryLevel = batteryLevel;
-        this.isAvailable = isAvailable;
-        this.kmDriven = kmDriven;
-        this.LINKED_ACCOUNT = linkedAccount;
-        this.LINKED_PHONE_NUMBER = linkedPhoneNumber;
-    }
 
-    public void ride() {
-        if (batteryLevel > 0 && isAvailable) {
-            System.out.println("Bike is available for ride.");
-        } else {
-            System.out.println("Bike is not available.");
-        }
-    }
 
-    public void printBikeDetails() {
-        System.out.println("Bike ID: " + bikeID);
-        System.out.println("Battery Level: " + batteryLevel + "%");
-        System.out.println("Availability: " + (isAvailable ? "Available" : "Not Available"));
-        System.out.println("Distance Driven: " + kmDriven + " km");
-    }
-     public void printRideDetails(int usageInMinutes) {
-        this.totalUsageInMinutes = usageInMinutes;
-        this.totalFare = calculateFare(usageInMinutes);
-        System.out.println("Linked Account: " + LINKED_ACCOUNT);
-        System.out.println("Linked Phone Number: " + LINKED_PHONE_NUMBER);
-        System.out.println("Bike ID: " + bikeID);
-        System.out.println("Usage in Minutes: " + usageInMinutes);
-        System.out.println("Total Fare: " + totalFare);
-    }
+   private static final String COMPANY_NAME = "ERyder";
+   private static final double BASE_FARE = 1.0;
+   private static final double PER_MINUTE_FARE = 0.5;
+   private final String LINK_PHONE_NUMBER;
+   private final String LINKED_ACCOUNT;
+   private double totalUsageInMinutes;
+   private double totalFare;
 
-    public String getBikeID() {
-        return bikeID;
-    }
+   public ERyder(String bikeID, int batteryLevel, boolean isAvailable, double kmDriven){
+      
+      this.bikeID = bikeID;
+      this.batteryLevel = batteryLevel;
+      this.isAvailable = isAvailable;
+      this.kmDriven = kmDriven;
+      this.LINK_PHONE_NUMBER = "N/A";
+      this.LINKED_ACCOUNT = "N/A";
+   };
+   public ERyder(String bikeID, int batteryLevel, boolean isAvailable, double kmDriven, String LINK_PHONE_NUMBER, String LINKED_ACCOUNT){
+      this.bikeID = bikeID; 
+      this.batteryLevel = batteryLevel;
+       this.isAvailable = isAvailable;
+       this.kmDriven = kmDriven;
+       this.LINK_PHONE_NUMBER = LINK_PHONE_NUMBER;
+       this.LINKED_ACCOUNT = LINKED_ACCOUNT;
+      this.isAvailable = isAvailable;
+      this.kmDriven = kmDriven;
+      if (batteryLevel <= 0) {
+         this.isAvailable = false;
+      } else {
+         this.isAvailable = true;
+      }
+   } 
+   public void ride() {
+      if (this.isAvailable) {
+         this.batteryLevel -= 10;
+         if (this.batteryLevel <= 0) {
+            this.isAvailable = false;
+         } else {
+            System.out.println("Bike " + this.bikeID + " is available.");
+         }
+      } else {
+         System.out.println("Bike " + this.bikeID + " is not available.");
+      }
 
-    public void setBikeID(String bikeID) {
-        this.bikeID = bikeID;
-    }
+   }
 
-    public int getBatteryLevel() {
-        return batteryLevel;
-    }
+   public void printBikeDetails() {
+      String var10001 = this.bikeID;
+      System.out.println("Bike ID: " + var10001);
+      var10001 = String.valueOf(this.batteryLevel);
+      System.out.println("Battery Level: " + var10001);
+      System.out.println("Availability: " + (this.isAvailable ? "Available" : "Not Available"));
+      var10001 = String.valueOf(this.kmDriven);
+      System.out.println("Kilometers Driven: " + var10001);
+   }
+   public void printRideDetails(int usageInMinutes) {
+      String var10001 = this.LINKED_ACCOUNT;
+      System.out.println("Linked Phone Number: " + var10001);
+      var10001 = this.LINK_PHONE_NUMBER;
+      System.out.println("Linked Account: " + var10001);
+      var10001 = this.bikeID;
+      System.out.println("Bike ID: " + var10001);
+      var10001 = String.valueOf(usageInMinutes);
+      System.out.println("Usage Time (minutes): " + var10001);
+      totalFare = calculateFare(usageInMinutes);
+      var10001 = String.valueOf(totalFare);
+      System.out.println("Total Fare: $" + var10001);
 
-    public void setBatteryLevel(int batteryLevel) {
-        if (batteryLevel >= 0 && batteryLevel <= 100) {
-            this.batteryLevel = batteryLevel;
-        } else {
-            this.batteryLevel = 0;
-        }
-    }
-
-    public boolean isAvailable() {
-        return isAvailable;
-    }
-
-    public void setAvailable(boolean available) {
-        isAvailable = available;
-    }
-
-    public double getKmDriven() {
-        return kmDriven;
-    }
-
-    public void setKmDriven(double kmDriven) {
-        this.kmDriven = kmDriven;
-    }
-    private double calculateFare(int usageInMinutes) {
-        return BASE_FARE + (PER_MINUTE_FARE * usageInMinutes);
-    }
+   }
+   private double calculateFare(int usageInMinutes) {
+      return BASE_FARE + (PER_MINUTE_FARE * usageInMinutes);
+   }
+   public int getBatteryLevel() {
+      return this.batteryLevel;
+   }
+   public void setBatteryLevel(int batteryLevel) {
+      this.batteryLevel = batteryLevel;
+   }
+   public double getCalulatedFare(int usageInMinutes) {
+      return calculateFare(usageInMinutes);
+   }
 }
